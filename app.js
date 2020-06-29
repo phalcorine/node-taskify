@@ -5,6 +5,7 @@ const expsession = require("express-session");
 const dotenv = require("dotenv").config({
   path: "./config/config.env",
 });
+const methodOverride = require("method-override");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo")(expsession);
@@ -36,13 +37,31 @@ app.use(
 // JSON
 app.use(express.json());
 
+// Method Override
+app.use(
+  methodOverride((req, res) => {
+    if (req.body && typeof req.body === "object" && "_method" in req.body) {
+      // delete POST bodies from urlencoded form request
+      let method = req.body._method;
+      delete req.body._method;
+      return method;
+    }
+  })
+);
+
 // Logging for express
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
 // Handlebars Helpers
-const { formatDate } = require("./helpers/hbs");
+const {
+  editIcon,
+  formatDate,
+  htmlSelect,
+  stripTags,
+  truncate,
+} = require("./helpers/hbs");
 
 // Setup Handlebars
 app.engine(
@@ -51,7 +70,11 @@ app.engine(
     defaultLayout: "main",
     extname: ".hbs",
     helpers: {
+      editIcon,
       formatDate,
+      htmlSelect,
+      stripTags,
+      truncate,
     },
   })
 );

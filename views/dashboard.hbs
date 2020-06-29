@@ -25,9 +25,16 @@
             <td>{{ formatDate createdAt 'MMMM Do YYYY, h:mm:ss a ' }}</td>
             <td>{{ formatDate updatedAt 'MMMM Do YYYY, h:mm:ss a ' }}</td>
             <td>
-                <a href="/tasks/{{ _id }}">View</a> &nbsp;
-                <a href="/tasks/edit/{{ _id }}">Edit</a> &nbsp;
-                <a href="/tasks/delete/{{ _id }}">Delete</a>
+                <a href="/tasks/{{ _id }}" class="btn btn-float">
+                    <i class="fas fa-eye"></i></a>
+                <a href="/tasks/edit/{{ _id }}" class="btn btn-float">
+                    <i class="fas fa-edit"></i></a>
+                <form action="/tasks/{{_id}}" method="POST" id="delete-form">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit" class="btn red">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
             </td>
         </tr>
         {{/each}}

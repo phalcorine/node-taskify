@@ -51,9 +51,12 @@ router.get("/tasks", ensureAuth, async (req, res) => {
       })
       .lean();
 
+    const user = req.user.toObject();
+
     // Response
     res.render("tasks/index", {
       tasks: tasks,
+      loggedUser: user,
     });
   } catch (ex) {
     // Handle exceptions

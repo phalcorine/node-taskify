@@ -43,9 +43,7 @@ function load() {
   });
 
   passport.deserializeUser((id, doneCb) => {
-    User.findById(id, (err, user) => {
-      doneCb(err, user);
-    });
+    User.findById(id, (err, user) => doneCb(err, user));
   });
 }
 
