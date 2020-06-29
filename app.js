@@ -92,9 +92,20 @@ app.use(
   })
 );
 
-// PAssport middleware
+// Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Set global variables middleware
+//app.use(setGlobals());
+
+// app.use(function (req, res, next) {
+//   // Set the global user object
+//   res.locals.user = req.user || null;
+
+//   // forward control
+//   next();
+// });
 
 // Static files
 app.use(express.static(path.join(__dirname, "public")));

@@ -6,6 +6,8 @@ module.exports = {
   editIcon: (taskUser, loggedUser, taskId, floating = true) => {
     // Return an empty string if the creator of the task
     // is not the logged in user
+    console.log("Task User: ", taskUser);
+    console.log("Logged User: ", loggedUser);
     if (taskUser._id.toString() !== loggedUser._id.toString()) {
       return "";
     }

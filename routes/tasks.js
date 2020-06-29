@@ -8,6 +8,47 @@ const User = require("../models/User");
 const Task = require("../models/Task");
 const { translateAliases } = require("../models/User");
 
+// @desc    Show Single Task Page
+// @route   GET /:id
+router.get("/:id", ensureAuth, async (req, res) => {
+  try {
+    // Fetch a task by ID token
+    let task = await Task.findById(req.params.id).populate("user").lean();
+
+    // Return an error response if a task was not found
+    if (!task) {
+      return res.render("error/show404", {
+        message: `A task with the given Id token was not found...`,
+      });
+    }
+
+    // Check if the task is private to the logged in user
+    if (task.status == "private") {
+      if (task.user._id != req.user.id) {
+        return res.redirect("/dashboard", {
+          message: "Can not view private task",
+        });
+      }
+    }
+
+    console.log("Task: ", task);
+
+    const user = req.user;
+
+    // Return response
+    res.render("tasks/show", {
+      task: task,
+      user: user,
+    });
+  } catch (ex) {
+    // Handle exceptions
+    console.error(ex);
+    return res.render("error/show500", {
+      message: `Reason: ${ex.message}`,
+    });
+  }
+});
+
 // @desc    Show Add Task Page
 // @route   GET /dashboard
 router.get("/add", ensureAuth, async (req, res) => {
@@ -135,7 +176,7 @@ router.delete("/:id", ensureAuth, async (req, res) => {
 
     if (!task) {
       return res.render("error/show404", {
-        message: "A task with the given ID was not found...",
+        message: "A task with the given ID toekn was not found...",
       });
     }
 
@@ -143,6 +184,34 @@ router.delete("/:id", ensureAuth, async (req, res) => {
     await task.remove();
 
     res.redirect("/dashboard");
+  } catch (ex) {
+    console.error(ex);
+    return res.render("error/show500", {
+      message: `Reason: ${ex.message}`,
+    });
+  }
+});
+
+// @desc    Show User Tasks Page
+// @route   GET /tasks/user/:userId
+router.get("/user/:userId", ensureAuth, async (req, res) => {
+  try {
+    // Fetch all tasks public tasks created by user
+    const tasks = await Task.find({
+      user: req.params.userId,
+      status: "public",
+    })
+      .populate("user")
+      .lean();
+
+    // User object
+    const user = req.user;
+
+    // Return response
+    res.render("tasks/user", {
+      tasks: tasks,
+      user: user,
+    });
   } catch (ex) {
     console.error(ex);
     return res.render("error/show500", {

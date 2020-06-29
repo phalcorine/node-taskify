@@ -31,7 +31,7 @@ router.get("/dashboard", ensureAuth, async (req, res) => {
     });
   } catch (ex) {
     console.error(ex);
-    return res.render("error/error500", {
+    return res.render("error/show500", {
       message: `Reason: ${ex.message}`,
     });
   }
@@ -61,7 +61,7 @@ router.get("/tasks", ensureAuth, async (req, res) => {
   } catch (ex) {
     // Handle exceptions
     console.error(ex);
-    return res.render("error/503", {
+    return res.render("error/show500", {
       message: `Reason: ${ex.message}`,
     });
   }
