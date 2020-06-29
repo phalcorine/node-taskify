@@ -19,7 +19,7 @@ const schema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    image: {
+    imageUri: {
       type: String,
       required: false,
     },

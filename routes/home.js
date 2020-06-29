@@ -37,4 +37,31 @@ router.get("/dashboard", ensureAuth, async (req, res) => {
   }
 });
 
+// @desc        Show all tasks
+// @route       GET /tasks/add
+router.get("/tasks", ensureAuth, async (req, res) => {
+  try {
+    // Fetch all public tasks
+    const tasks = await Task.find({
+      status: "public",
+    })
+      .populate("user")
+      .sort({
+        createdAt: "desc",
+      })
+      .lean();
+
+    // Response
+    res.render("tasks/index", {
+      tasks: tasks,
+    });
+  } catch (ex) {
+    // Handle exceptions
+    console.error(ex);
+    return res.render("error/503", {
+      message: `Reason: ${ex.message}`,
+    });
+  }
+});
+
 module.exports = router;
