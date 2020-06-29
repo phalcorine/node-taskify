@@ -1,0 +1,40 @@
+<h6>Dashboard</h6>
+
+<h3>Welcome, {{name}}</h3>
+
+<p>Here are your tasks...</p>
+
+{{#if tasks}}
+<table class="striped" style="table-layout: auto;">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Is Complete?</th>
+            <th>Date Created</th>
+            <th>Last Updated</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each tasks}}
+        <tr>
+            <td>{{ title }}</td>
+            <td><span class="dash-status">{{ status }}</span></td>
+            <td>{{ isCompleted }}</td>
+            <td>{{ formatDate createdAt 'MMMM Do YYYY, h:mm:ss a ' }}</td>
+            <td>{{ formatDate updatedAt 'MMMM Do YYYY, h:mm:ss a ' }}</td>
+            <td>
+                <a href="/tasks/{{ _id }}">View</a> &nbsp;
+                <a href="/tasks/edit/{{ _id }}">Edit</a> &nbsp;
+                <a href="/tasks/delete/{{ _id }}">Delete</a>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+{{else}}
+<p>You have not created any tasks yet...</p>
+{{/if}}
+
+{{> _add_btn}}

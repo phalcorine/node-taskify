@@ -1,0 +1,43 @@
+<h3>Add Task</h3>
+<div class="row">
+    <form action="/tasks/add" method="POST" class="col s12">
+        <div class="row">
+            <div class="input-field">
+                <input type="text" name="title" id="title">
+                <label for="title">Title</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field">
+                <select name="status" id="status">
+                    <option value="private" selected>Private</option>
+                    <option value="public">Public</option>
+                </select>
+                <label for="status">Status</label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field">
+                <h5>Description of the Task</h5>
+                <textarea name="description" id="description"></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="input-field">
+                <label>
+                    <input type="checkbox" class="filled-in" name="complete" id="complete">
+                    <span>Is Complete?</span>
+                </label>
+            </div>
+        </div>
+
+        <br />
+        <div class="row">
+            <input type="submit" value="Save" class="btn">
+            <a href="/dashboard" class="btn ember">Cancel</a>
+        </div>
+    </form>
+</div>
